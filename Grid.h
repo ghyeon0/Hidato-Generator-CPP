@@ -9,6 +9,7 @@ public:
     int height;
     int size;
     int data;
+    Grid();
     Grid(int _width, int _height, int _size, int _data);
 };
 

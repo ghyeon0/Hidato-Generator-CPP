@@ -7,6 +7,7 @@ class Group{
 public: 
     int start;
     int end;
+    Group();
     Group(int _start, int _end);
 };
 

@@ -10,6 +10,7 @@ public:
     int size;
     int start;
     int *next;
+    Model();
     Model(int _width, int _height, int _size, int _start);
 };
 
