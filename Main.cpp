@@ -1,7 +1,9 @@
 #include <iostream>
+#include "Hidato.h"
 
 using namespace std;
 
 int main(){
-    cout << "Hello World!" << endl;
+    Hidato *hidato = new Hidato();
+    hidato -> generate(4, 4);
 }
