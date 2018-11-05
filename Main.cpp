@@ -5,5 +5,5 @@ using namespace std;
 
 int main(){
     Hidato *hidato = new Hidato();
-    hidato -> generate(4, 4);
+    hidato -> generate(8, 8);
 }

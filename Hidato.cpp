@@ -85,6 +85,9 @@ void Hidato::gen_init(Model *model, int width, int height) {
     model -> size = size;
     model -> start = rand_int(size);
     model -> next = new int[size];
+    for(int i = 0;i < size;i++){
+        model -> next[i] = 0;
+    }
 }
 
 void Hidato::gen_randomize(Model *model) {
@@ -93,7 +96,7 @@ void Hidato::gen_randomize(Model *model) {
     }
 }
 
-void gen_uninit(Model *model) {
+void Hidato::gen_uninit(Model *model) {
     delete[] model -> next;
 }
 
@@ -152,7 +155,7 @@ void Hidato::gen_copy(Model *dst, Model *src) {
 }
 
 int Hidato::gen_anneal(Model *model, double max_temp, double min_temp, int steps) {
-    Model *best;
+    Model *best = new Model;
     gen_init(best, model->width, model->height);
     gen_copy(best, model);
     double factor = -log(max_temp / min_temp);
@@ -184,7 +187,7 @@ int Hidato::gen_anneal(Model *model, double max_temp, double min_temp, int steps
 }
 
 void Hidato::gen(int width, int height, int *output) {
-    Model *model;
+    Model *model = new Model;
     while (1) {
         gen_init(model, width, height);
         gen_randomize(model);
