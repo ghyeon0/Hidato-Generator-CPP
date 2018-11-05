@@ -4,10 +4,10 @@
 #include "Grid.h"
 #include "Group.h"
 
-#ifndef _HIDATO_H_
-#define _HIDATO_H_
+#ifndef _Generator_H_
+#define _Generator_H_
 
-class Hidato{
+class Generator{
 public:
     int rand_int(int n);
     double rand_double();

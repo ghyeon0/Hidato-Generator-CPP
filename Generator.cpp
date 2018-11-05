@@ -1,11 +1,11 @@
-#include "Hidato.h"
+#include "Generator.h"
 #include <ctime>
 #include <cmath>    
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
 
-void Hidato::generate(int width, int height){
+void Generator::generate(int width, int height){
     srand((unsigned int)time(NULL));
     int output[width * height];
     gen(width, height, output);
@@ -20,17 +20,17 @@ void Hidato::generate(int width, int height){
     }
 }
 
-int Hidato::rand_int(int n){
+int Generator::rand_int(int n){
     int result;
     while(n <= (result = rand() / (RAND_MAX / n)));
     return result;
 }
 
-double Hidato::rand_double(){
+double Generator::rand_double(){
     return (double)rand() / (double)RAND_MAX;
 }
 
-int Hidato::rand_neighbor(int width, int height, int index) {
+int Generator::rand_neighbor(int width, int height, int index) {
     int x = index % width;
     int y = index / width;
     while (1) {
@@ -51,7 +51,7 @@ int Hidato::rand_neighbor(int width, int height, int index) {
     }
 }
 
-void Hidato::display(int width, int height, int *grid) {
+void Generator::display(int width, int height, int *grid) {
     int size = width * height;
     for (int y = 0; y < height; y++) {
         std::cout << "+";
@@ -78,7 +78,7 @@ void Hidato::display(int width, int height, int *grid) {
     std::cout << "\n" << std::endl;
 }
 
-void Hidato::gen_init(Model *model, int width, int height) {
+void Generator::gen_init(Model *model, int width, int height) {
     int size = width * height;
     model -> width = width;
     model -> height = height;
@@ -90,17 +90,17 @@ void Hidato::gen_init(Model *model, int width, int height) {
     }
 }
 
-void Hidato::gen_randomize(Model *model) {
+void Generator::gen_randomize(Model *model) {
     for (int i = 0; i < model->size; i++) {
         model->next[i] = rand_neighbor(model->width, model->height, i);
     }
 }
 
-void Hidato::gen_uninit(Model *model) {
+void Generator::gen_uninit(Model *model) {
     delete[] model -> next;
 }
 
-int Hidato::gen_extract(Model *model, int *grid) {
+int Generator::gen_extract(Model *model, int *grid) {
     for (int i = 0; i < model->size; i++) {
         grid[i] = 0;
     }
@@ -115,19 +115,19 @@ int Hidato::gen_extract(Model *model, int *grid) {
     return result;
 }
 
-void Hidato::gen_display(Model *model) {
+void Generator::gen_display(Model *model) {
     int grid[model->size];
     gen_extract(model, grid);
     display(model->width, model->height, grid);
 }
 
-int Hidato::gen_energy(Model *model) {
+int Generator::gen_energy(Model *model) {
     int grid[model->size];
     int count = gen_extract(model, grid);
     return model->size - count;
 }
 
-int Hidato::gen_do_move(Model *model) {
+int Generator::gen_do_move(Model *model) {
     int index = rand_int(model->size);
     int before = model->next[index];
     int after;
@@ -138,13 +138,13 @@ int Hidato::gen_do_move(Model *model) {
     return (index << 16) | before;
 }
 
-void Hidato::gen_undo_move(Model *model, int undo_data) {
+void Generator::gen_undo_move(Model *model, int undo_data) {
     int index = (undo_data >> 16) & 0xffff;
     int value = undo_data & 0xffff;
     model->next[index] = value;
 }
 
-void Hidato::gen_copy(Model *dst, Model *src) {
+void Generator::gen_copy(Model *dst, Model *src) {
     dst->width = src->width;
     dst->height = src->height;
     dst->size = src->size;
@@ -154,7 +154,7 @@ void Hidato::gen_copy(Model *dst, Model *src) {
     }
 }
 
-int Hidato::gen_anneal(Model *model, double max_temp, double min_temp, int steps) {
+int Generator::gen_anneal(Model *model, double max_temp, double min_temp, int steps) {
     Model *best = new Model;
     gen_init(best, model->width, model->height);
     gen_copy(best, model);
@@ -186,7 +186,7 @@ int Hidato::gen_anneal(Model *model, double max_temp, double min_temp, int steps
     return best_energy;
 }
 
-void Hidato::gen(int width, int height, int *output) {
+void Generator::gen(int width, int height, int *output) {
     Model *model = new Model;
     while (1) {
         gen_init(model, width, height);

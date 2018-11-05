@@ -1,9 +1,9 @@
 #include <iostream>
-#include "Hidato.h"
+#include "Generator.h"
 
 using namespace std;
 
 int main(){
-    Hidato *hidato = new Hidato();
+    Generator *hidato = new Generator();
     hidato -> generate(8, 8);
 }
